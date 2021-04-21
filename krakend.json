@@ -1,0 +1,353 @@
+{
+    "version": 2,
+    "extra_config": {},
+    "timeout": "3000ms",
+    "cache_ttl": "300s",
+    "output_encoding": "json",
+    "name": "getprint-api-gateway",
+    "port": 8000,
+    "endpoints": [
+        {
+            "endpoint": "/user",
+            "method": "GET",
+            "output_encoding": "json",
+            "extra_config": {
+                "github.com/devopsfaith/krakend-ratelimit/juju/router": {
+                    "maxRate": 2,
+                    "clientMaxRate": 0,
+                    "strategy": "ip"
+                }
+            },
+            "backend": [
+                {
+                    "host": [
+                        "getprint_service_user:8001"
+                    ],
+                    "url_pattern": "/",
+                    "encoding": "json",
+                    "method": "GET",
+                    "extra_config": {
+                        "github.com/devopsfaith/krakend/http": {
+                            "return_error_details": "backend"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "endpoint": "/user",
+            "method": "POST",
+            "output_encoding": "json",
+            "extra_config": {
+                "github.com/devopsfaith/krakend-ratelimit/juju/router": {
+                    "maxRate": 2,
+                    "clientMaxRate": 0,
+                    "strategy": "ip"
+                }
+            },
+            "backend": [
+                {
+                    "host": [
+                        "getprint_service_user:8001"
+                    ],
+                    "url_pattern": "/user",
+                    "encoding": "json",
+                    "method": "POST",
+                    "extra_config": {
+                        "github.com/devopsfaith/krakend/http": {
+                            "return_error_details": "backend"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "endpoint": "/user/{id}",
+            "method": "GET",
+            "output_encoding": "json",
+            "extra_config": {
+                "github.com/devopsfaith/krakend-jose/validator": {
+                    "alg": "RS256",
+                    "jwk-url": "http://getprint_service_auth:8002/.well-knows/jwks-token.json",
+                    "disable_jwk_security": true
+                },
+                "github.com/devopsfaith/krakend-ratelimit/juju/router": {
+                    "maxRate": 2,
+                    "clientMaxRate": 0,
+                    "strategy": "ip"
+                }
+            },
+            "backend": [
+                {
+                    "host": [
+                        "getprint_service_user:8001"
+                    ],
+                    "url_pattern": "/user/{JWT.sub}",
+                    "encoding": "json",
+                    "method": "GET",
+                    "extra_config": {
+                        "github.com/devopsfaith/krakend/http": {
+                            "return_error_details": "backend"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "endpoint": "/user/{id}",
+            "method": "PUT",
+            "output_encoding": "json",
+            "extra_config": {
+                "github.com/devopsfaith/krakend-jose/validator": {
+                    "alg": "RS256",
+                    "jwk-url": "http://getprint_service_auth:8002/.well-knows/jwks-token.json",
+                    "disable_jwk_security": true
+                },
+                "github.com/devopsfaith/krakend-ratelimit/juju/router": {
+                    "maxRate": 2,
+                    "clientMaxRate": 0,
+                    "strategy": "ip"
+                }
+            },
+            "backend": [
+                {
+                    "host": [
+                        "getprint_service_user:8001"
+                    ],
+                    "url_pattern": "/user/{id}",
+                    "encoding": "json",
+                    "method": "PUT",
+                    "extra_config": {
+                        "github.com/devopsfaith/krakend/http": {
+                            "return_error_details": "backend"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "endpoint": "/auth",
+            "method": "GET",
+            "output_encoding": "json",
+            "backend": [
+                {
+                    "host": [
+                        "getprint_service_auth:8002"
+                    ],
+                    "url_pattern": "/",
+                    "encoding": "json",
+                    "method": "GET"
+                }
+            ]
+        },
+        {
+            "endpoint": "/auth/login",
+            "method": "POST",
+            "output_encoding": "json",
+            "extra_config": {
+                "github.com/devopsfaith/krakend-ratelimit/juju/router": {
+                    "maxRate": 2,
+                    "clientMaxRate": 0,
+                    "strategy": "ip"
+                }
+            },
+            "backend": [
+                {
+                    "host": [
+                        "getprint_service_auth:8002"
+                    ],
+                    "url_pattern": "/login",
+                    "encoding": "json",
+                    "method": "POST"
+                }
+            ]
+        },
+        {
+            "endpoint": "/order",
+            "method": "GET",
+            "output_encoding": "json",
+            "extra_config": {
+                "github.com/devopsfaith/krakend-jose/validator": {
+                    "alg": "RS256",
+                    "jwk-url": "http://getprint_service_auth:8002/.well-knows/jwks-token.json",
+                    "disable_jwk_security": true
+                },
+                "github.com/devopsfaith/krakend-ratelimit/juju/router": {
+                    "maxRate": 2,
+                    "clientMaxRate": 0,
+                    "strategy": "ip"
+                }
+            },
+            "backend": [
+                {
+                    "host": [
+                        "getprint_service_order:8004"
+                    ],
+                    "url_pattern": "/",
+                    "encoding": "json",
+                    "method": "GET"
+                }
+            ]
+        },
+        {
+            "endpoint": "/order",
+            "method": "POST",
+            "output_encoding": "json",
+            "extra_config": {
+                "github.com/devopsfaith/krakend-jose/validator": {
+                    "alg": "RS256",
+                    "jwk-url": "http://getprint_service_auth:8002/.well-knows/jwks-token.json",
+                    "disable_jwk_security": true
+                },
+                "github.com/devopsfaith/krakend-ratelimit/juju/router": {
+                    "maxRate": 2,
+                    "clientMaxRate": 0,
+                    "strategy": "ip"
+                }
+            },
+            "backend": [
+                {
+                    "host": [
+                        "getprint_service_order:8004"
+                    ],
+                    "url_pattern": "/order",
+                    "encoding": "json",
+                    "method": "POST",
+                    "extra_config": {
+                        "github.com/devopsfaith/krakend/http": {
+                            "return_error_details": "backend"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "endpoint": "/order/id/{id}",
+            "method": "GET",
+            "output_encoding": "json",
+            "extra_config": {
+                "github.com/devopsfaith/krakend-jose/validator": {
+                    "alg": "RS256",
+                    "jwk-url": "http://getprint_service_auth:8002/.well-knows/jwks-token.json",
+                    "disable_jwk_security": true
+                },
+                "github.com/devopsfaith/krakend-ratelimit/juju/router": {
+                    "maxRate": 2,
+                    "clientMaxRate": 0,
+                    "strategy": "ip"
+                }
+            },
+            "backend": [
+                {
+                    "host": [
+                        "getprint_service_order:8004"
+                    ],
+                    "url_pattern": "/order/{id}",
+                    "encoding": "json",
+                    "method": "GET",
+                    "extra_config": {
+                        "github.com/devopsfaith/krakend/http": {
+                            "return_error_details": "backend"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "endpoint": "/order/user/{user_id}",
+            "method": "GET",
+            "output_encoding": "json",
+            "extra_config": {
+                "github.com/devopsfaith/krakend-jose/validator": {
+                    "alg": "RS256",
+                    "jwk-url": "http://getprint_service_auth:8002/.well-knows/jwks-token.json",
+                    "disable_jwk_security": true
+                },
+                "github.com/devopsfaith/krakend-ratelimit/juju/router": {
+                    "maxRate": 2,
+                    "clientMaxRate": 0,
+                    "strategy": "ip"
+                }
+            },
+            "backend": [
+                {
+                    "host": [
+                        "getprint_service_order:8004"
+                    ],
+                    "url_pattern": "/order/user/{user_id}",
+                    "encoding": "json",
+                    "method": "GET",
+                    "extra_config": {
+                        "github.com/devopsfaith/krakend/http": {
+                            "return_error_details": "backend"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "endpoint": "/order/partner/{id}",
+            "method": "GET",
+            "output_encoding": "json",
+            "extra_config": {
+                "github.com/devopsfaith/krakend-jose/validator": {
+                    "alg": "RS256",
+                    "jwk-url": "http://getprint_service_auth:8002/.well-knows/jwks-token.json",
+                    "disable_jwk_security": true
+                },
+                "github.com/devopsfaith/krakend-ratelimit/juju/router": {
+                    "maxRate": 2,
+                    "clientMaxRate": 0,
+                    "strategy": "ip"
+                }
+            },
+            "backend": [
+                {
+                    "host": [
+                        "getprint_service_order:8004"
+                    ],
+                    "url_pattern": "/order/partner/{id}",
+                    "encoding": "json",
+                    "method": "GET",
+                    "extra_config": {
+                        "github.com/devopsfaith/krakend/http": {
+                            "return_error_details": "backend"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "endpoint": "/order/{id}",
+            "method": "PUT",
+            "output_encoding": "json",
+            "extra_config": {
+                "github.com/devopsfaith/krakend-jose/validator": {
+                    "alg": "RS256",
+                    "jwk-url": "http://getprint_service_auth:8002/.well-knows/jwks-token.json",
+                    "disable_jwk_security": true
+                },
+                "github.com/devopsfaith/krakend-ratelimit/juju/router": {
+                    "maxRate": 2,
+                    "clientMaxRate": 0,
+                    "strategy": "ip"
+                }
+            },
+            "backend": [
+                {
+                    "host": [
+                        "getprint_service_order:8004"
+                    ],
+                    "url_pattern": "/order/{id}",
+                    "encoding": "json",
+                    "method": "PUT",
+                    "extra_config": {
+                        "github.com/devopsfaith/krakend/http": {
+                            "return_error_details": "backend"
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}
