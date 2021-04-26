@@ -3,14 +3,14 @@
     "extra_config": {},
     "timeout": "3000ms",
     "cache_ttl": "300s",
-    "output_encoding": "json",
+    "output_encoding": "no-op",
     "name": "getprint-api-gateway",
     "port": 8000,
     "endpoints": [
         {
             "endpoint": "/user",
             "method": "GET",
-            "output_encoding": "json",
+            "output_encoding": "no-op",
             "extra_config": {
                 "github.com/devopsfaith/krakend-ratelimit/juju/router": {
                     "maxRate": 2,
@@ -24,7 +24,7 @@
                         "getprint_service_user:8001"
                     ],
                     "url_pattern": "/",
-                    "encoding": "json",
+                    "encoding": "no-op",
                     "method": "GET",
                     "extra_config": {
                         "github.com/devopsfaith/krakend/http": {
@@ -37,7 +37,7 @@
         {
             "endpoint": "/user",
             "method": "POST",
-            "output_encoding": "json",
+            "output_encoding": "no-op",
             "extra_config": {
                 "github.com/devopsfaith/krakend-ratelimit/juju/router": {
                     "maxRate": 2,
@@ -51,7 +51,7 @@
                         "getprint_service_user:8001"
                     ],
                     "url_pattern": "/user",
-                    "encoding": "json",
+                    "encoding": "no-op",
                     "method": "POST",
                     "extra_config": {
                         "github.com/devopsfaith/krakend/http": {
@@ -64,7 +64,7 @@
         {
             "endpoint": "/user/{id}",
             "method": "GET",
-            "output_encoding": "json",
+            "output_encoding": "no-op",
             "extra_config": {
                 "github.com/devopsfaith/krakend-jose/validator": {
                     "alg": "RS256",
@@ -83,7 +83,7 @@
                         "getprint_service_user:8001"
                     ],
                     "url_pattern": "/user/{JWT.sub}",
-                    "encoding": "json",
+                    "encoding": "no-op",
                     "method": "GET",
                     "extra_config": {
                         "github.com/devopsfaith/krakend/http": {
@@ -96,7 +96,7 @@
         {
             "endpoint": "/user/{id}",
             "method": "PUT",
-            "output_encoding": "json",
+            "output_encoding": "no-op",
             "extra_config": {
                 "github.com/devopsfaith/krakend-jose/validator": {
                     "alg": "RS256",
@@ -115,7 +115,7 @@
                         "getprint_service_user:8001"
                     ],
                     "url_pattern": "/user/{id}",
-                    "encoding": "json",
+                    "encoding": "no-op",
                     "method": "PUT",
                     "extra_config": {
                         "github.com/devopsfaith/krakend/http": {
@@ -128,14 +128,14 @@
         {
             "endpoint": "/auth",
             "method": "GET",
-            "output_encoding": "json",
+            "output_encoding": "no-op",
             "backend": [
                 {
                     "host": [
                         "getprint_service_auth:8002"
                     ],
                     "url_pattern": "/",
-                    "encoding": "json",
+                    "encoding": "no-op",
                     "method": "GET"
                 }
             ]
@@ -143,7 +143,7 @@
         {
             "endpoint": "/auth/login",
             "method": "POST",
-            "output_encoding": "json",
+            "output_encoding": "no-op",
             "extra_config": {
                 "github.com/devopsfaith/krakend-ratelimit/juju/router": {
                     "maxRate": 2,
@@ -157,7 +157,7 @@
                         "getprint_service_auth:8002"
                     ],
                     "url_pattern": "/login",
-                    "encoding": "json",
+                    "encoding": "no-op",
                     "method": "POST"
                 }
             ]
@@ -165,7 +165,7 @@
         {
             "endpoint": "/auth/refresh-token",
             "method": "POST",
-            "output_encoding": "json",
+            "output_encoding": "no-op",
             "extra_config": {
                 "github.com/devopsfaith/krakend-ratelimit/juju/router": {
                     "maxRate": 2,
@@ -179,7 +179,7 @@
                         "getprint_service_auth:8002"
                     ],
                     "url_pattern": "/refresh-token",
-                    "encoding": "json",
+                    "encoding": "no-op",
                     "method": "POST"
                 }
             ]
@@ -187,7 +187,7 @@
         {
             "endpoint": "/order",
             "method": "GET",
-            "output_encoding": "json",
+            "output_encoding": "no-op",
             "extra_config": {
                 "github.com/devopsfaith/krakend-jose/validator": {
                     "alg": "RS256",
@@ -206,7 +206,7 @@
                         "getprint_service_order:8004"
                     ],
                     "url_pattern": "/",
-                    "encoding": "json",
+                    "encoding": "no-op",
                     "method": "GET"
                 }
             ]
@@ -214,7 +214,7 @@
         {
             "endpoint": "/order",
             "method": "POST",
-            "output_encoding": "json",
+            "output_encoding": "no-op",
             "extra_config": {
                 "github.com/devopsfaith/krakend-jose/validator": {
                     "alg": "RS256",
@@ -233,7 +233,7 @@
                         "getprint_service_order:8004"
                     ],
                     "url_pattern": "/order",
-                    "encoding": "json",
+                    "encoding": "no-op",
                     "method": "POST",
                     "extra_config": {
                         "github.com/devopsfaith/krakend/http": {
@@ -246,7 +246,7 @@
         {
             "endpoint": "/order/id/{id}",
             "method": "GET",
-            "output_encoding": "json",
+            "output_encoding": "no-op",
             "extra_config": {
                 "github.com/devopsfaith/krakend-jose/validator": {
                     "alg": "RS256",
@@ -265,7 +265,7 @@
                         "getprint_service_order:8004"
                     ],
                     "url_pattern": "/order/{id}",
-                    "encoding": "json",
+                    "encoding": "no-op",
                     "method": "GET",
                     "extra_config": {
                         "github.com/devopsfaith/krakend/http": {
@@ -278,7 +278,7 @@
         {
             "endpoint": "/order/user/{user_id}",
             "method": "GET",
-            "output_encoding": "json",
+            "output_encoding": "no-op",
             "extra_config": {
                 "github.com/devopsfaith/krakend-jose/validator": {
                     "alg": "RS256",
@@ -297,7 +297,7 @@
                         "getprint_service_order:8004"
                     ],
                     "url_pattern": "/order/user/{user_id}",
-                    "encoding": "json",
+                    "encoding": "no-op",
                     "method": "GET",
                     "extra_config": {
                         "github.com/devopsfaith/krakend/http": {
@@ -310,7 +310,7 @@
         {
             "endpoint": "/order/partner/{id}",
             "method": "GET",
-            "output_encoding": "json",
+            "output_encoding": "no-op",
             "extra_config": {
                 "github.com/devopsfaith/krakend-jose/validator": {
                     "alg": "RS256",
@@ -329,7 +329,7 @@
                         "getprint_service_order:8004"
                     ],
                     "url_pattern": "/order/partner/{id}",
-                    "encoding": "json",
+                    "encoding": "no-op",
                     "method": "GET",
                     "extra_config": {
                         "github.com/devopsfaith/krakend/http": {
@@ -342,7 +342,7 @@
         {
             "endpoint": "/order/{id}",
             "method": "PUT",
-            "output_encoding": "json",
+            "output_encoding": "no-op",
             "extra_config": {
                 "github.com/devopsfaith/krakend-jose/validator": {
                     "alg": "RS256",
@@ -361,7 +361,7 @@
                         "getprint_service_order:8004"
                     ],
                     "url_pattern": "/order/{id}",
-                    "encoding": "json",
+                    "encoding": "no-op",
                     "method": "PUT",
                     "extra_config": {
                         "github.com/devopsfaith/krakend/http": {
@@ -374,7 +374,7 @@
         {
             "endpoint": "/partner",
             "method": "POST",
-            "output_encoding": "json",
+            "output_encoding": "no-op",
             "extra_config": {
                 "github.com/devopsfaith/krakend-jose/validator": {
                     "alg": "RS256",
@@ -393,7 +393,7 @@
                         "getprint_service_partner:8003"
                     ],
                     "url_pattern": "/partner",
-                    "encoding": "json",
+                    "encoding": "no-op",
                     "method": "POST",
                     "extra_config": {
                         "github.com/devopsfaith/krakend/http": {
@@ -406,7 +406,7 @@
         {
             "endpoint": "/partner",
             "method": "GET",
-            "output_encoding": "json",
+            "output_encoding": "no-op",
             "extra_config": {
                 "github.com/devopsfaith/krakend-ratelimit/juju/router": {
                     "maxRate": 2,
@@ -420,7 +420,7 @@
                         "getprint_service_partner:8003"
                     ],
                     "url_pattern": "/partner",
-                    "encoding": "json",
+                    "encoding": "no-op",
                     "method": "GET",
                     "extra_config": {
                         "github.com/devopsfaith/krakend/http": {
@@ -433,7 +433,7 @@
         {
             "endpoint": "/partner/{id}",
             "method": "GET",
-            "output_encoding": "json",
+            "output_encoding": "no-op",
             "extra_config": {
                 "github.com/devopsfaith/krakend-ratelimit/juju/router": {
                     "maxRate": 2,
@@ -447,7 +447,7 @@
                         "getprint_service_partner:8003"
                     ],
                     "url_pattern": "/partner/{id}",
-                    "encoding": "json",
+                    "encoding": "no-op",
                     "method": "GET",
                     "extra_config": {
                         "github.com/devopsfaith/krakend/http": {
@@ -460,7 +460,7 @@
         {
             "endpoint": "/partner/{id}",
             "method": "PUT",
-            "output_encoding": "json",
+            "output_encoding": "no-op",
             "extra_config": {
                 "github.com/devopsfaith/krakend-jose/validator": {
                     "alg": "RS256",
@@ -479,7 +479,7 @@
                         "getprint_service_partner:8003"
                     ],
                     "url_pattern": "/partner/{id}",
-                    "encoding": "json",
+                    "encoding": "no-op",
                     "method": "PUT",
                     "extra_config": {
                         "github.com/devopsfaith/krakend/http": {
@@ -492,7 +492,7 @@
         {
             "endpoint": "/follow",
             "method": "POST",
-            "output_encoding": "json",
+            "output_encoding": "no-op",
             "extra_config": {
                 "github.com/devopsfaith/krakend-jose/validator": {
                     "alg": "RS256",
@@ -511,7 +511,7 @@
                         "getprint_service_partner:8003"
                     ],
                     "url_pattern": "/follow",
-                    "encoding": "json",
+                    "encoding": "no-op",
                     "method": "POST",
                     "extra_config": {
                         "github.com/devopsfaith/krakend/http": {
@@ -524,7 +524,7 @@
         {
             "endpoint": "/follow/{id}",
             "method": "DELETE",
-            "output_encoding": "json",
+            "output_encoding": "no-op",
             "extra_config": {
                 "github.com/devopsfaith/krakend-jose/validator": {
                     "alg": "RS256",
@@ -543,7 +543,7 @@
                         "getprint_service_partner:8003"
                     ],
                     "url_pattern": "/follow/{id}",
-                    "encoding": "json",
+                    "encoding": "no-op",
                     "method": "DELETE",
                     "extra_config": {
                         "github.com/devopsfaith/krakend/http": {
