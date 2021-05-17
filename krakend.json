@@ -1,7 +1,7 @@
 {
     "version": 2,
     "extra_config": {},
-    "timeout": "3000ms",
+    "timeout": "10000ms",
     "cache_ttl": "300s",
     "output_encoding": "no-op",
     "name": "getprint-api-gateway",
@@ -114,7 +114,7 @@
                     "host": [
                         "getprint_service_user:8001"
                     ],
-                    "url_pattern": "/user/{id}",
+                    "url_pattern": "/user/{JWT.sub}",
                     "encoding": "no-op",
                     "method": "PUT",
                     "extra_config": {
@@ -189,11 +189,6 @@
             "method": "GET",
             "output_encoding": "no-op",
             "extra_config": {
-                "github.com/devopsfaith/krakend-jose/validator": {
-                    "alg": "RS256",
-                    "jwk-url": "http://getprint_service_auth:8002/.well-knows/jwks-token.json",
-                    "disable_jwk_security": true
-                },
                 "github.com/devopsfaith/krakend-ratelimit/juju/router": {
                     "maxRate": 2,
                     "clientMaxRate": 0,
@@ -296,7 +291,7 @@
                     "host": [
                         "getprint_service_order:8004"
                     ],
-                    "url_pattern": "/order/user/{user_id}",
+                    "url_pattern": "/order/user/{JWT.sub}",
                     "encoding": "no-op",
                     "method": "GET",
                     "extra_config": {
@@ -315,7 +310,8 @@
                 "github.com/devopsfaith/krakend-jose/validator": {
                     "alg": "RS256",
                     "jwk-url": "http://getprint_service_auth:8002/.well-knows/jwks-token.json",
-                    "disable_jwk_security": true
+                    "disable_jwk_security": true,
+                    "roles": ["seller", "admin"]
                 },
                 "github.com/devopsfaith/krakend-ratelimit/juju/router": {
                     "maxRate": 2,
@@ -414,6 +410,10 @@
                     "strategy": "ip"
                 }
             },
+            "querystring_params": [
+                "status",
+                "name"
+              ],
             "backend": [
                 {
                     "host": [
