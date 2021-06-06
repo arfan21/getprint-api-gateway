@@ -14,7 +14,7 @@
     "port": 8000,
     "endpoints": [
         {
-            "endpoint": "/user",
+            "endpoint": "/v1/user",
             "method": "GET",
             "output_encoding": "no-op",
             "extra_config": {
@@ -41,7 +41,7 @@
             ]
         },
         {
-            "endpoint": "/user",
+            "endpoint": "/v1/user",
             "method": "POST",
             "output_encoding": "no-op",
             "extra_config": {
@@ -68,7 +68,7 @@
             ]
         },
         {
-            "endpoint": "/user/{id}",
+            "endpoint": "/v1/user/{id}",
             "method": "GET",
             "output_encoding": "no-op",
             "extra_config": {
@@ -100,7 +100,7 @@
             ]
         },
         {
-            "endpoint": "/user/{id}",
+            "endpoint": "/v1/user/{id}",
             "method": "PUT",
             "output_encoding": "no-op",
             "extra_config": {
@@ -132,7 +132,7 @@
             ]
         },
         {
-            "endpoint": "/auth",
+            "endpoint": "/v1/auth",
             "method": "GET",
             "output_encoding": "no-op",
             "backend": [
@@ -147,7 +147,7 @@
             ]
         },
         {
-            "endpoint": "/auth/login",
+            "endpoint": "/v1/auth/login",
             "method": "POST",
             "output_encoding": "no-op",
             "extra_config": {
@@ -169,7 +169,7 @@
             ]
         },
         {
-            "endpoint": "/auth/refresh-token",
+            "endpoint": "/v1/auth/refresh-token",
             "method": "POST",
             "output_encoding": "no-op",
             "extra_config": {
@@ -191,7 +191,7 @@
             ]
         },
         {
-            "endpoint": "/order",
+            "endpoint": "/v1/order",
             "method": "GET",
             "output_encoding": "no-op",
             "extra_config": {
@@ -213,7 +213,7 @@
             ]
         },
         {
-            "endpoint": "/order",
+            "endpoint": "/v1/order",
             "method": "POST",
             "output_encoding": "no-op",
             "extra_config": {
@@ -233,7 +233,7 @@
                     "host": [
                         "getprint_service_order:8004"
                     ],
-                    "url_pattern": "/order",
+                    "url_pattern": "/v1/order",
                     "encoding": "no-op",
                     "method": "POST",
                     "extra_config": {
@@ -245,7 +245,7 @@
             ]
         },
         {
-            "endpoint": "/order/id/{id}",
+            "endpoint": "/v1/order/id/{id}",
             "method": "GET",
             "output_encoding": "no-op",
             "extra_config": {
@@ -265,7 +265,7 @@
                     "host": [
                         "getprint_service_order:8004"
                     ],
-                    "url_pattern": "/order/{id}",
+                    "url_pattern": "/v1/order/{id}",
                     "encoding": "no-op",
                     "method": "GET",
                     "extra_config": {
@@ -277,7 +277,7 @@
             ]
         },
         {
-            "endpoint": "/order/user/{user_id}",
+            "endpoint": "/v1/order/user/{user_id}",
             "method": "GET",
             "output_encoding": "no-op",
             "extra_config": {
@@ -297,7 +297,7 @@
                     "host": [
                         "getprint_service_order:8004"
                     ],
-                    "url_pattern": "/order/user/{JWT.sub}",
+                    "url_pattern": "/v1/order/user/{JWT.sub}",
                     "encoding": "no-op",
                     "method": "GET",
                     "extra_config": {
@@ -309,7 +309,7 @@
             ]
         },
         {
-            "endpoint": "/order/partner/{id}",
+            "endpoint": "/v1/order/partner/{id}",
             "method": "GET",
             "output_encoding": "no-op",
             "extra_config": {
@@ -330,7 +330,7 @@
                     "host": [
                         "getprint_service_order:8004"
                     ],
-                    "url_pattern": "/order/partner/{id}",
+                    "url_pattern": "/v1/order/partner/{id}",
                     "encoding": "no-op",
                     "method": "GET",
                     "extra_config": {
@@ -342,7 +342,7 @@
             ]
         },
         {
-            "endpoint": "/order/{id}",
+            "endpoint": "/v1/order/{id}",
             "method": "PUT",
             "output_encoding": "no-op",
             "extra_config": {
@@ -362,7 +362,7 @@
                     "host": [
                         "getprint_service_order:8004"
                     ],
-                    "url_pattern": "/order/{id}",
+                    "url_pattern": "/v1/order/{id}",
                     "encoding": "no-op",
                     "method": "PUT",
                     "extra_config": {
@@ -374,7 +374,167 @@
             ]
         },
         {
-            "endpoint": "/partner",
+            "endpoint": "/v1/cart",
+            "method": "POST",
+            "output_encoding": "no-op",
+            "extra_config": {
+                "github.com/devopsfaith/krakend-jose/validator": {
+                    "alg": "RS256",
+                    "jwk-url": "http://getprint_service_auth:8002/.well-knows/jwks-token.json",
+                    "disable_jwk_security": true
+                },
+                "github.com/devopsfaith/krakend-ratelimit/juju/router": {
+                    "maxRate": 2,
+                    "clientMaxRate": 0,
+                    "strategy": "ip"
+                }
+            },
+            "backend": [
+                {
+                    "host": [
+                        "getprint_service_partner:8003"
+                    ],
+                    "url_pattern": "/v1/cart",
+                    "encoding": "no-op",
+                    "method": "POST",
+                    "extra_config": {
+                        "github.com/devopsfaith/krakend/http": {
+                            "return_error_details": "backend"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "endpoint": "/v1/cart/user/{id}",
+            "method": "GET",
+            "output_encoding": "no-op",
+            "extra_config": {
+                "github.com/devopsfaith/krakend-jose/validator": {
+                    "alg": "RS256",
+                    "jwk-url": "http://getprint_service_auth:8002/.well-knows/jwks-token.json",
+                    "disable_jwk_security": true
+                },
+                "github.com/devopsfaith/krakend-ratelimit/juju/router": {
+                    "maxRate": 2,
+                    "clientMaxRate": 0,
+                    "strategy": "ip"
+                }
+            },
+            "backend": [
+                {
+                    "host": [
+                        "getprint_service_partner:8003"
+                    ],
+                    "url_pattern": "/v1/cart/user/{JWT.sub}",
+                    "encoding": "no-op",
+                    "method": "GET",
+                    "extra_config": {
+                        "github.com/devopsfaith/krakend/http": {
+                            "return_error_details": "backend"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "endpoint": "/v1/cart/{id}",
+            "method": "PUT",
+            "output_encoding": "no-op",
+            "extra_config": {
+                "github.com/devopsfaith/krakend-jose/validator": {
+                    "alg": "RS256",
+                    "jwk-url": "http://getprint_service_auth:8002/.well-knows/jwks-token.json",
+                    "disable_jwk_security": true
+                },
+                "github.com/devopsfaith/krakend-ratelimit/juju/router": {
+                    "maxRate": 2,
+                    "clientMaxRate": 0,
+                    "strategy": "ip"
+                }
+            },
+            "backend": [
+                {
+                    "host": [
+                        "getprint_service_partner:8003"
+                    ],
+                    "url_pattern": "/v1/cart/{id}",
+                    "encoding": "no-op",
+                    "method": "PUT",
+                    "extra_config": {
+                        "github.com/devopsfaith/krakend/http": {
+                            "return_error_details": "backend"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "endpoint": "/v1/cart/user/{id}",
+            "method": "DELETE",
+            "output_encoding": "no-op",
+            "extra_config": {
+                "github.com/devopsfaith/krakend-jose/validator": {
+                    "alg": "RS256",
+                    "jwk-url": "http://getprint_service_auth:8002/.well-knows/jwks-token.json",
+                    "disable_jwk_security": true
+                },
+                "github.com/devopsfaith/krakend-ratelimit/juju/router": {
+                    "maxRate": 2,
+                    "clientMaxRate": 0,
+                    "strategy": "ip"
+                }
+            },
+            "backend": [
+                {
+                    "host": [
+                        "getprint_service_partner:8003"
+                    ],
+                    "url_pattern": "/v1/cart/user/{JWT.sub}",
+                    "encoding": "no-op",
+                    "method": "DELETE",
+                    "extra_config": {
+                        "github.com/devopsfaith/krakend/http": {
+                            "return_error_details": "backend"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "endpoint": "/v1/cart/{id}",
+            "method": "DELETE",
+            "output_encoding": "no-op",
+            "extra_config": {
+                "github.com/devopsfaith/krakend-jose/validator": {
+                    "alg": "RS256",
+                    "jwk-url": "http://getprint_service_auth:8002/.well-knows/jwks-token.json",
+                    "disable_jwk_security": true
+                },
+                "github.com/devopsfaith/krakend-ratelimit/juju/router": {
+                    "maxRate": 2,
+                    "clientMaxRate": 0,
+                    "strategy": "ip"
+                }
+            },
+            "backend": [
+                {
+                    "host": [
+                        "getprint_service_partner:8003"
+                    ],
+                    "url_pattern": "/v1/cart/{id}",
+                    "encoding": "no-op",
+                    "method": "DELETE",
+                    "extra_config": {
+                        "github.com/devopsfaith/krakend/http": {
+                            "return_error_details": "backend"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "endpoint": "/v1/partner",
             "method": "POST",
             "output_encoding": "no-op",
             "extra_config": {
@@ -406,7 +566,7 @@
             ]
         },
         {
-            "endpoint": "/partner",
+            "endpoint": "/v1/partner",
             "method": "GET",
             "output_encoding": "no-op",
             "extra_config": {
@@ -437,7 +597,7 @@
             ]
         },  
         {
-            "endpoint": "/partner/{id}",
+            "endpoint": "/v1/partner/{id}",
             "method": "GET",
             "output_encoding": "no-op",
             "extra_config": {
@@ -464,7 +624,7 @@
             ]
         },  
         {
-            "endpoint": "/partner/{id}",
+            "endpoint": "/v1/partner/{id}",
             "method": "PUT",
             "output_encoding": "no-op",
             "extra_config": {
@@ -496,7 +656,7 @@
             ]
         },
         {
-            "endpoint": "/follow",
+            "endpoint": "/v1/follow",
             "method": "POST",
             "output_encoding": "no-op",
             "extra_config": {
@@ -528,7 +688,7 @@
             ]
         },
         {
-            "endpoint": "/follow/{id}",
+            "endpoint": "/v1/follow/{id}",
             "method": "DELETE",
             "output_encoding": "no-op",
             "extra_config": {
