@@ -3,44 +3,17 @@
     "extra_config": {
         "github_com/devopsfaith/krakend-cors": {
             "allow_origins": [
-              "*"
-            ]
-          }
+                "http://localhost:3000"
+            ],
+            "allow_credentials": true
+        }
     },
     "timeout": "10000ms",
     "cache_ttl": "300s",
     "output_encoding": "no-op",
     "name": "getprint-api-gateway",
     "port": 8000,
-    "endpoints": [
-        {
-            "endpoint": "/v1/user",
-            "method": "GET",
-            "output_encoding": "no-op",
-            "extra_config": {
-                "github.com/devopsfaith/krakend-ratelimit/juju/router": {
-                    "maxRate": 2,
-                    "clientMaxRate": 0,
-                    "strategy": "ip"
-                }
-            },
-            "backend": [
-                {
-                    "host": [
-                        "getprint_service_user:8001"
-                    ],
-                    "url_pattern": "/",
-                    "encoding": "no-op",
-                    "method": "GET",
-                    "extra_config": {
-                        "github.com/devopsfaith/krakend/http": {
-                            "return_error_details": "backend"
-                        }
-                    }
-                }
-            ]
-        },
-        {
+    "endpoints": [{
             "endpoint": "/v1/user",
             "method": "POST",
             "output_encoding": "no-op",
@@ -51,31 +24,30 @@
                     "strategy": "ip"
                 }
             },
-            "backend": [
-                {
-                    "host": [
-                        "getprint_service_user:8001"
-                    ],
-                    "url_pattern": "/user",
-                    "encoding": "no-op",
-                    "method": "POST",
-                    "extra_config": {
-                        "github.com/devopsfaith/krakend/http": {
-                            "return_error_details": "backend"
-                        }
+            "backend": [{
+                "host": [
+                    "getprint_service_user:8001"
+                ],
+                "url_pattern": "/user",
+                "encoding": "no-op",
+                "method": "POST",
+                "extra_config": {
+                    "github.com/devopsfaith/krakend/http": {
+                        "return_error_details": "backend"
                     }
                 }
-            ]
+            }]
         },
         {
-            "endpoint": "/v1/user/{id}",
+            "endpoint": "/v1/user",
             "method": "GET",
             "output_encoding": "no-op",
             "extra_config": {
                 "github.com/devopsfaith/krakend-jose/validator": {
                     "alg": "RS256",
                     "jwk-url": "http://getprint_service_auth:8002/.well-knows/jwks-token.json",
-                    "disable_jwk_security": true
+                    "disable_jwk_security": true,
+                    "cookie_key": "X-GETPRINT-KEY"
                 },
                 "github.com/devopsfaith/krakend-ratelimit/juju/router": {
                     "maxRate": 2,
@@ -83,21 +55,19 @@
                     "strategy": "ip"
                 }
             },
-            "backend": [
-                {
-                    "host": [
-                        "getprint_service_user:8001"
-                    ],
-                    "url_pattern": "/user/{JWT.sub}",
-                    "encoding": "no-op",
-                    "method": "GET",
-                    "extra_config": {
-                        "github.com/devopsfaith/krakend/http": {
-                            "return_error_details": "backend"
-                        }
+            "backend": [{
+                "host": [
+                    "getprint_service_user:8001"
+                ],
+                "url_pattern": "/user/{JWT.sub}",
+                "encoding": "no-op",
+                "method": "GET",
+                "extra_config": {
+                    "github.com/devopsfaith/krakend/http": {
+                        "return_error_details": "backend"
                     }
                 }
-            ]
+            }]
         },
         {
             "endpoint": "/v1/user/{id}",
@@ -107,7 +77,8 @@
                 "github.com/devopsfaith/krakend-jose/validator": {
                     "alg": "RS256",
                     "jwk-url": "http://getprint_service_auth:8002/.well-knows/jwks-token.json",
-                    "disable_jwk_security": true
+                    "disable_jwk_security": true,
+                    "cookie_key": "X-GETPRINT-KEY"
                 },
                 "github.com/devopsfaith/krakend-ratelimit/juju/router": {
                     "maxRate": 2,
@@ -115,36 +86,32 @@
                     "strategy": "ip"
                 }
             },
-            "backend": [
-                {
-                    "host": [
-                        "getprint_service_user:8001"
-                    ],
-                    "url_pattern": "/user/{JWT.sub}",
-                    "encoding": "no-op",
-                    "method": "PUT",
-                    "extra_config": {
-                        "github.com/devopsfaith/krakend/http": {
-                            "return_error_details": "backend"
-                        }
+            "backend": [{
+                "host": [
+                    "getprint_service_user:8001"
+                ],
+                "url_pattern": "/user/{JWT.sub}",
+                "encoding": "no-op",
+                "method": "PUT",
+                "extra_config": {
+                    "github.com/devopsfaith/krakend/http": {
+                        "return_error_details": "backend"
                     }
                 }
-            ]
+            }]
         },
         {
             "endpoint": "/v1/auth",
             "method": "GET",
             "output_encoding": "no-op",
-            "backend": [
-                {
-                    "host": [
-                        "getprint_service_auth:8002"
-                    ],
-                    "url_pattern": "/",
-                    "encoding": "no-op",
-                    "method": "GET"
-                }
-            ]
+            "backend": [{
+                "host": [
+                    "getprint_service_auth:8002"
+                ],
+                "url_pattern": "/",
+                "encoding": "no-op",
+                "method": "GET"
+            }]
         },
         {
             "endpoint": "/v1/auth/login",
@@ -157,16 +124,14 @@
                     "strategy": "ip"
                 }
             },
-            "backend": [
-                {
-                    "host": [
-                        "getprint_service_auth:8002"
-                    ],
-                    "url_pattern": "/login",
-                    "encoding": "no-op",
-                    "method": "POST"
-                }
-            ]
+            "backend": [{
+                "host": [
+                    "getprint_service_auth:8002"
+                ],
+                "url_pattern": "/login",
+                "encoding": "no-op",
+                "method": "POST"
+            }]
         },
         {
             "endpoint": "/v1/auth/refresh-token",
@@ -179,16 +144,14 @@
                     "strategy": "ip"
                 }
             },
-            "backend": [
-                {
-                    "host": [
-                        "getprint_service_auth:8002"
-                    ],
-                    "url_pattern": "/refresh-token",
-                    "encoding": "no-op",
-                    "method": "POST"
-                }
-            ]
+            "backend": [{
+                "host": [
+                    "getprint_service_auth:8002"
+                ],
+                "url_pattern": "/refresh-token",
+                "encoding": "no-op",
+                "method": "POST"
+            }]
         },
         {
             "endpoint": "/v1/order",
@@ -201,16 +164,14 @@
                     "strategy": "ip"
                 }
             },
-            "backend": [
-                {
-                    "host": [
-                        "getprint_service_order:8004"
-                    ],
-                    "url_pattern": "/",
-                    "encoding": "no-op",
-                    "method": "GET"
-                }
-            ]
+            "backend": [{
+                "host": [
+                    "getprint_service_order:8004"
+                ],
+                "url_pattern": "/",
+                "encoding": "no-op",
+                "method": "GET"
+            }]
         },
         {
             "endpoint": "/v1/order",
@@ -220,7 +181,8 @@
                 "github.com/devopsfaith/krakend-jose/validator": {
                     "alg": "RS256",
                     "jwk-url": "http://getprint_service_auth:8002/.well-knows/jwks-token.json",
-                    "disable_jwk_security": true
+                    "disable_jwk_security": true,
+                    "cookie_key": "X-GETPRINT-KEY"
                 },
                 "github.com/devopsfaith/krakend-ratelimit/juju/router": {
                     "maxRate": 2,
@@ -228,21 +190,19 @@
                     "strategy": "ip"
                 }
             },
-            "backend": [
-                {
-                    "host": [
-                        "getprint_service_order:8004"
-                    ],
-                    "url_pattern": "/v1/order",
-                    "encoding": "no-op",
-                    "method": "POST",
-                    "extra_config": {
-                        "github.com/devopsfaith/krakend/http": {
-                            "return_error_details": "backend"
-                        }
+            "backend": [{
+                "host": [
+                    "getprint_service_order:8004"
+                ],
+                "url_pattern": "/v1/order",
+                "encoding": "no-op",
+                "method": "POST",
+                "extra_config": {
+                    "github.com/devopsfaith/krakend/http": {
+                        "return_error_details": "backend"
                     }
                 }
-            ]
+            }]
         },
         {
             "endpoint": "/v1/order/id/{id}",
@@ -252,7 +212,8 @@
                 "github.com/devopsfaith/krakend-jose/validator": {
                     "alg": "RS256",
                     "jwk-url": "http://getprint_service_auth:8002/.well-knows/jwks-token.json",
-                    "disable_jwk_security": true
+                    "disable_jwk_security": true,
+                    "cookie_key": "X-GETPRINT-KEY"
                 },
                 "github.com/devopsfaith/krakend-ratelimit/juju/router": {
                     "maxRate": 2,
@@ -260,21 +221,19 @@
                     "strategy": "ip"
                 }
             },
-            "backend": [
-                {
-                    "host": [
-                        "getprint_service_order:8004"
-                    ],
-                    "url_pattern": "/v1/order/{id}",
-                    "encoding": "no-op",
-                    "method": "GET",
-                    "extra_config": {
-                        "github.com/devopsfaith/krakend/http": {
-                            "return_error_details": "backend"
-                        }
+            "backend": [{
+                "host": [
+                    "getprint_service_order:8004"
+                ],
+                "url_pattern": "/v1/order/{id}",
+                "encoding": "no-op",
+                "method": "GET",
+                "extra_config": {
+                    "github.com/devopsfaith/krakend/http": {
+                        "return_error_details": "backend"
                     }
                 }
-            ]
+            }]
         },
         {
             "endpoint": "/v1/order/user/{user_id}",
@@ -284,7 +243,8 @@
                 "github.com/devopsfaith/krakend-jose/validator": {
                     "alg": "RS256",
                     "jwk-url": "http://getprint_service_auth:8002/.well-knows/jwks-token.json",
-                    "disable_jwk_security": true
+                    "disable_jwk_security": true,
+                    "cookie_key": "X-GETPRINT-KEY"
                 },
                 "github.com/devopsfaith/krakend-ratelimit/juju/router": {
                     "maxRate": 2,
@@ -292,21 +252,19 @@
                     "strategy": "ip"
                 }
             },
-            "backend": [
-                {
-                    "host": [
-                        "getprint_service_order:8004"
-                    ],
-                    "url_pattern": "/v1/order/user/{JWT.sub}",
-                    "encoding": "no-op",
-                    "method": "GET",
-                    "extra_config": {
-                        "github.com/devopsfaith/krakend/http": {
-                            "return_error_details": "backend"
-                        }
+            "backend": [{
+                "host": [
+                    "getprint_service_order:8004"
+                ],
+                "url_pattern": "/v1/order/user/{JWT.sub}",
+                "encoding": "no-op",
+                "method": "GET",
+                "extra_config": {
+                    "github.com/devopsfaith/krakend/http": {
+                        "return_error_details": "backend"
                     }
                 }
-            ]
+            }]
         },
         {
             "endpoint": "/v1/order/partner/{id}",
@@ -325,21 +283,19 @@
                     "strategy": "ip"
                 }
             },
-            "backend": [
-                {
-                    "host": [
-                        "getprint_service_order:8004"
-                    ],
-                    "url_pattern": "/v1/order/partner/{id}",
-                    "encoding": "no-op",
-                    "method": "GET",
-                    "extra_config": {
-                        "github.com/devopsfaith/krakend/http": {
-                            "return_error_details": "backend"
-                        }
+            "backend": [{
+                "host": [
+                    "getprint_service_order:8004"
+                ],
+                "url_pattern": "/v1/order/partner/{id}",
+                "encoding": "no-op",
+                "method": "GET",
+                "extra_config": {
+                    "github.com/devopsfaith/krakend/http": {
+                        "return_error_details": "backend"
                     }
                 }
-            ]
+            }]
         },
         {
             "endpoint": "/v1/order/{id}",
@@ -349,7 +305,8 @@
                 "github.com/devopsfaith/krakend-jose/validator": {
                     "alg": "RS256",
                     "jwk-url": "http://getprint_service_auth:8002/.well-knows/jwks-token.json",
-                    "disable_jwk_security": true
+                    "disable_jwk_security": true,
+                    "cookie_key": "X-GETPRINT-KEY"
                 },
                 "github.com/devopsfaith/krakend-ratelimit/juju/router": {
                     "maxRate": 2,
@@ -357,21 +314,19 @@
                     "strategy": "ip"
                 }
             },
-            "backend": [
-                {
-                    "host": [
-                        "getprint_service_order:8004"
-                    ],
-                    "url_pattern": "/v1/order/{id}",
-                    "encoding": "no-op",
-                    "method": "PUT",
-                    "extra_config": {
-                        "github.com/devopsfaith/krakend/http": {
-                            "return_error_details": "backend"
-                        }
+            "backend": [{
+                "host": [
+                    "getprint_service_order:8004"
+                ],
+                "url_pattern": "/v1/order/{id}",
+                "encoding": "no-op",
+                "method": "PUT",
+                "extra_config": {
+                    "github.com/devopsfaith/krakend/http": {
+                        "return_error_details": "backend"
                     }
                 }
-            ]
+            }]
         },
         {
             "endpoint": "/v1/cart",
@@ -381,7 +336,8 @@
                 "github.com/devopsfaith/krakend-jose/validator": {
                     "alg": "RS256",
                     "jwk-url": "http://getprint_service_auth:8002/.well-knows/jwks-token.json",
-                    "disable_jwk_security": true
+                    "disable_jwk_security": true,
+                    "cookie_key": "X-GETPRINT-KEY"
                 },
                 "github.com/devopsfaith/krakend-ratelimit/juju/router": {
                     "maxRate": 2,
@@ -389,21 +345,19 @@
                     "strategy": "ip"
                 }
             },
-            "backend": [
-                {
-                    "host": [
-                        "getprint_service_partner:8003"
-                    ],
-                    "url_pattern": "/v1/cart",
-                    "encoding": "no-op",
-                    "method": "POST",
-                    "extra_config": {
-                        "github.com/devopsfaith/krakend/http": {
-                            "return_error_details": "backend"
-                        }
+            "backend": [{
+                "host": [
+                    "getprint_service_order:8004"
+                ],
+                "url_pattern": "/v1/cart",
+                "encoding": "no-op",
+                "method": "POST",
+                "extra_config": {
+                    "github.com/devopsfaith/krakend/http": {
+                        "return_error_details": "backend"
                     }
                 }
-            ]
+            }]
         },
         {
             "endpoint": "/v1/cart/user/{id}",
@@ -413,7 +367,8 @@
                 "github.com/devopsfaith/krakend-jose/validator": {
                     "alg": "RS256",
                     "jwk-url": "http://getprint_service_auth:8002/.well-knows/jwks-token.json",
-                    "disable_jwk_security": true
+                    "disable_jwk_security": true,
+                    "cookie_key": "X-GETPRINT-KEY"
                 },
                 "github.com/devopsfaith/krakend-ratelimit/juju/router": {
                     "maxRate": 2,
@@ -421,21 +376,19 @@
                     "strategy": "ip"
                 }
             },
-            "backend": [
-                {
-                    "host": [
-                        "getprint_service_partner:8003"
-                    ],
-                    "url_pattern": "/v1/cart/user/{JWT.sub}",
-                    "encoding": "no-op",
-                    "method": "GET",
-                    "extra_config": {
-                        "github.com/devopsfaith/krakend/http": {
-                            "return_error_details": "backend"
-                        }
+            "backend": [{
+                "host": [
+                    "getprint_service_order:8004"
+                ],
+                "url_pattern": "/v1/cart/user/{JWT.sub}",
+                "encoding": "no-op",
+                "method": "GET",
+                "extra_config": {
+                    "github.com/devopsfaith/krakend/http": {
+                        "return_error_details": "backend"
                     }
                 }
-            ]
+            }]
         },
         {
             "endpoint": "/v1/cart/{id}",
@@ -445,7 +398,8 @@
                 "github.com/devopsfaith/krakend-jose/validator": {
                     "alg": "RS256",
                     "jwk-url": "http://getprint_service_auth:8002/.well-knows/jwks-token.json",
-                    "disable_jwk_security": true
+                    "disable_jwk_security": true,
+                    "cookie_key": "X-GETPRINT-KEY"
                 },
                 "github.com/devopsfaith/krakend-ratelimit/juju/router": {
                     "maxRate": 2,
@@ -453,21 +407,19 @@
                     "strategy": "ip"
                 }
             },
-            "backend": [
-                {
-                    "host": [
-                        "getprint_service_partner:8003"
-                    ],
-                    "url_pattern": "/v1/cart/{id}",
-                    "encoding": "no-op",
-                    "method": "PUT",
-                    "extra_config": {
-                        "github.com/devopsfaith/krakend/http": {
-                            "return_error_details": "backend"
-                        }
+            "backend": [{
+                "host": [
+                    "getprint_service_order:8004"
+                ],
+                "url_pattern": "/v1/cart/{id}",
+                "encoding": "no-op",
+                "method": "PUT",
+                "extra_config": {
+                    "github.com/devopsfaith/krakend/http": {
+                        "return_error_details": "backend"
                     }
                 }
-            ]
+            }]
         },
         {
             "endpoint": "/v1/cart/user/{id}",
@@ -477,7 +429,8 @@
                 "github.com/devopsfaith/krakend-jose/validator": {
                     "alg": "RS256",
                     "jwk-url": "http://getprint_service_auth:8002/.well-knows/jwks-token.json",
-                    "disable_jwk_security": true
+                    "disable_jwk_security": true,
+                    "cookie_key": "X-GETPRINT-KEY"
                 },
                 "github.com/devopsfaith/krakend-ratelimit/juju/router": {
                     "maxRate": 2,
@@ -485,31 +438,30 @@
                     "strategy": "ip"
                 }
             },
-            "backend": [
-                {
-                    "host": [
-                        "getprint_service_partner:8003"
-                    ],
-                    "url_pattern": "/v1/cart/user/{JWT.sub}",
-                    "encoding": "no-op",
-                    "method": "DELETE",
-                    "extra_config": {
-                        "github.com/devopsfaith/krakend/http": {
-                            "return_error_details": "backend"
-                        }
+            "backend": [{
+                "host": [
+                    "getprint_service_order:8004"
+                ],
+                "url_pattern": "/v1/cart/user/{JWT.sub}",
+                "encoding": "no-op",
+                "method": "DELETE",
+                "extra_config": {
+                    "github.com/devopsfaith/krakend/http": {
+                        "return_error_details": "backend"
                     }
                 }
-            ]
+            }]
         },
         {
-            "endpoint": "/v1/cart/{id}",
+            "endpoint": "/v1/cart/id/{id}",
             "method": "DELETE",
             "output_encoding": "no-op",
             "extra_config": {
                 "github.com/devopsfaith/krakend-jose/validator": {
                     "alg": "RS256",
                     "jwk-url": "http://getprint_service_auth:8002/.well-knows/jwks-token.json",
-                    "disable_jwk_security": true
+                    "disable_jwk_security": true,
+                    "cookie_key": "X-GETPRINT-KEY"
                 },
                 "github.com/devopsfaith/krakend-ratelimit/juju/router": {
                     "maxRate": 2,
@@ -517,21 +469,19 @@
                     "strategy": "ip"
                 }
             },
-            "backend": [
-                {
-                    "host": [
-                        "getprint_service_partner:8003"
-                    ],
-                    "url_pattern": "/v1/cart/{id}",
-                    "encoding": "no-op",
-                    "method": "DELETE",
-                    "extra_config": {
-                        "github.com/devopsfaith/krakend/http": {
-                            "return_error_details": "backend"
-                        }
+            "backend": [{
+                "host": [
+                    "getprint_service_order:8004"
+                ],
+                "url_pattern": "/v1/cart/{id}",
+                "encoding": "no-op",
+                "method": "DELETE",
+                "extra_config": {
+                    "github.com/devopsfaith/krakend/http": {
+                        "return_error_details": "backend"
                     }
                 }
-            ]
+            }]
         },
         {
             "endpoint": "/v1/partner",
@@ -541,7 +491,8 @@
                 "github.com/devopsfaith/krakend-jose/validator": {
                     "alg": "RS256",
                     "jwk-url": "http://getprint_service_auth:8002/.well-knows/jwks-token.json",
-                    "disable_jwk_security": true
+                    "disable_jwk_security": true,
+                    "cookie_key": "X-GETPRINT-KEY"
                 },
                 "github.com/devopsfaith/krakend-ratelimit/juju/router": {
                     "maxRate": 2,
@@ -549,21 +500,19 @@
                     "strategy": "ip"
                 }
             },
-            "backend": [
-                {
-                    "host": [
-                        "getprint_service_partner:8003"
-                    ],
-                    "url_pattern": "/partner",
-                    "encoding": "no-op",
-                    "method": "POST",
-                    "extra_config": {
-                        "github.com/devopsfaith/krakend/http": {
-                            "return_error_details": "backend"
-                        }
+            "backend": [{
+                "host": [
+                    "getprint_service_partner:8003"
+                ],
+                "url_pattern": "/partner",
+                "encoding": "no-op",
+                "method": "POST",
+                "extra_config": {
+                    "github.com/devopsfaith/krakend/http": {
+                        "return_error_details": "backend"
                     }
                 }
-            ]
+            }]
         },
         {
             "endpoint": "/v1/partner",
@@ -579,23 +528,21 @@
             "querystring_params": [
                 "status",
                 "name"
-              ],
-            "backend": [
-                {
-                    "host": [
-                        "getprint_service_partner:8003"
-                    ],
-                    "url_pattern": "/partner",
-                    "encoding": "no-op",
-                    "method": "GET",
-                    "extra_config": {
-                        "github.com/devopsfaith/krakend/http": {
-                            "return_error_details": "backend"
-                        }
+            ],
+            "backend": [{
+                "host": [
+                    "getprint_service_partner:8003"
+                ],
+                "url_pattern": "/partner",
+                "encoding": "no-op",
+                "method": "GET",
+                "extra_config": {
+                    "github.com/devopsfaith/krakend/http": {
+                        "return_error_details": "backend"
                     }
                 }
-            ]
-        },  
+            }]
+        },
         {
             "endpoint": "/v1/partner/{id}",
             "method": "GET",
@@ -607,22 +554,20 @@
                     "strategy": "ip"
                 }
             },
-            "backend": [
-                {
-                    "host": [
-                        "getprint_service_partner:8003"
-                    ],
-                    "url_pattern": "/partner/{id}",
-                    "encoding": "no-op",
-                    "method": "GET",
-                    "extra_config": {
-                        "github.com/devopsfaith/krakend/http": {
-                            "return_error_details": "backend"
-                        }
+            "backend": [{
+                "host": [
+                    "getprint_service_partner:8003"
+                ],
+                "url_pattern": "/partner/{id}",
+                "encoding": "no-op",
+                "method": "GET",
+                "extra_config": {
+                    "github.com/devopsfaith/krakend/http": {
+                        "return_error_details": "backend"
                     }
                 }
-            ]
-        },  
+            }]
+        },
         {
             "endpoint": "/v1/partner/{id}",
             "method": "PUT",
@@ -631,7 +576,8 @@
                 "github.com/devopsfaith/krakend-jose/validator": {
                     "alg": "RS256",
                     "jwk-url": "http://getprint_service_auth:8002/.well-knows/jwks-token.json",
-                    "disable_jwk_security": true
+                    "disable_jwk_security": true,
+                    "cookie_key": "X-GETPRINT-KEY"
                 },
                 "github.com/devopsfaith/krakend-ratelimit/juju/router": {
                     "maxRate": 2,
@@ -639,21 +585,19 @@
                     "strategy": "ip"
                 }
             },
-            "backend": [
-                {
-                    "host": [
-                        "getprint_service_partner:8003"
-                    ],
-                    "url_pattern": "/partner/{id}",
-                    "encoding": "no-op",
-                    "method": "PUT",
-                    "extra_config": {
-                        "github.com/devopsfaith/krakend/http": {
-                            "return_error_details": "backend"
-                        }
+            "backend": [{
+                "host": [
+                    "getprint_service_partner:8003"
+                ],
+                "url_pattern": "/partner/{id}",
+                "encoding": "no-op",
+                "method": "PUT",
+                "extra_config": {
+                    "github.com/devopsfaith/krakend/http": {
+                        "return_error_details": "backend"
                     }
                 }
-            ]
+            }]
         },
         {
             "endpoint": "/v1/follow",
@@ -663,7 +607,8 @@
                 "github.com/devopsfaith/krakend-jose/validator": {
                     "alg": "RS256",
                     "jwk-url": "http://getprint_service_auth:8002/.well-knows/jwks-token.json",
-                    "disable_jwk_security": true
+                    "disable_jwk_security": true,
+                    "cookie_key": "X-GETPRINT-KEY"
                 },
                 "github.com/devopsfaith/krakend-ratelimit/juju/router": {
                     "maxRate": 2,
@@ -671,21 +616,19 @@
                     "strategy": "ip"
                 }
             },
-            "backend": [
-                {
-                    "host": [
-                        "getprint_service_partner:8003"
-                    ],
-                    "url_pattern": "/follow",
-                    "encoding": "no-op",
-                    "method": "POST",
-                    "extra_config": {
-                        "github.com/devopsfaith/krakend/http": {
-                            "return_error_details": "backend"
-                        }
+            "backend": [{
+                "host": [
+                    "getprint_service_partner:8003"
+                ],
+                "url_pattern": "/follow",
+                "encoding": "no-op",
+                "method": "POST",
+                "extra_config": {
+                    "github.com/devopsfaith/krakend/http": {
+                        "return_error_details": "backend"
                     }
                 }
-            ]
+            }]
         },
         {
             "endpoint": "/v1/follow/{id}",
@@ -695,7 +638,8 @@
                 "github.com/devopsfaith/krakend-jose/validator": {
                     "alg": "RS256",
                     "jwk-url": "http://getprint_service_auth:8002/.well-knows/jwks-token.json",
-                    "disable_jwk_security": true
+                    "disable_jwk_security": true,
+                    "cookie_key": "X-GETPRINT-KEY"
                 },
                 "github.com/devopsfaith/krakend-ratelimit/juju/router": {
                     "maxRate": 2,
@@ -703,21 +647,81 @@
                     "strategy": "ip"
                 }
             },
-            "backend": [
-                {
-                    "host": [
-                        "getprint_service_partner:8003"
-                    ],
-                    "url_pattern": "/follow/{id}",
-                    "encoding": "no-op",
-                    "method": "DELETE",
-                    "extra_config": {
-                        "github.com/devopsfaith/krakend/http": {
-                            "return_error_details": "backend"
-                        }
+            "backend": [{
+                "host": [
+                    "getprint_service_partner:8003"
+                ],
+                "url_pattern": "/follow/{id}",
+                "encoding": "no-op",
+                "method": "DELETE",
+                "extra_config": {
+                    "github.com/devopsfaith/krakend/http": {
+                        "return_error_details": "backend"
                     }
                 }
-            ]
+            }]
+        },
+        {
+            "endpoint": "/v1/media",
+            "method": "POST",
+            "output_encoding": "no-op",
+            "extra_config": {
+                "github.com/devopsfaith/krakend-jose/validator": {
+                    "alg": "RS256",
+                    "jwk-url": "http://getprint_service_auth:8002/.well-knows/jwks-token.json",
+                    "disable_jwk_security": true,
+                    "cookie_key": "X-GETPRINT-KEY"
+                },
+                "github.com/devopsfaith/krakend-ratelimit/juju/router": {
+                    "maxRate": 2,
+                    "clientMaxRate": 0,
+                    "strategy": "ip"
+                }
+            },
+            "backend": [{
+                "host": [
+                    "getprint_service_media:8005"
+                ],
+                "url_pattern": "/v1/media",
+                "encoding": "no-op",
+                "method": "POST",
+                "extra_config": {
+                    "github.com/devopsfaith/krakend/http": {
+                        "return_error_details": "backend"
+                    }
+                }
+            }]
+        },
+        {
+            "endpoint": "/v1/media",
+            "method": "DELETE",
+            "output_encoding": "no-op",
+            "extra_config": {
+                "github.com/devopsfaith/krakend-jose/validator": {
+                    "alg": "RS256",
+                    "jwk-url": "http://getprint_service_auth:8002/.well-knows/jwks-token.json",
+                    "disable_jwk_security": true,
+                    "cookie_key": "X-GETPRINT-KEY"
+                },
+                "github.com/devopsfaith/krakend-ratelimit/juju/router": {
+                    "maxRate": 2,
+                    "clientMaxRate": 0,
+                    "strategy": "ip"
+                }
+            },
+            "backend": [{
+                "host": [
+                    "getprint_service_media:8005"
+                ],
+                "url_pattern": "/v1/media",
+                "encoding": "no-op",
+                "method": "DELETE",
+                "extra_config": {
+                    "github.com/devopsfaith/krakend/http": {
+                        "return_error_details": "backend"
+                    }
+                }
+            }]
         }
     ]
 }
