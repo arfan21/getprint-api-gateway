@@ -70,7 +70,7 @@
             }]
         },
         {
-            "endpoint": "/v1/user/{id}",
+            "endpoint": "/v1/user",
             "method": "PUT",
             "output_encoding": "no-op",
             "extra_config": {
