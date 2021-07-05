@@ -446,7 +446,7 @@
             }]
         },
         {
-            "endpoint": "/v1/cart/{id}",
+            "endpoint": "/v1/cart/updatebatch",
             "method": "PUT",
             "output_encoding": "no-op",
             "extra_config": {
@@ -465,7 +465,7 @@
                 "host": [
                     "getprint_service_order:8004"
                 ],
-                "url_pattern": "/v1/cart/{id}",
+                "url_pattern": "/v1/cart/updatebatch",
                 "encoding": "no-op",
                 "method": "PUT",
                 "extra_config": {
